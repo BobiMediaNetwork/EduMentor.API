@@ -68,6 +68,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EduMentor.Application\EduMentor.Application.csproj" />
     <ProjectReference Include="..\EduMentor.Domain\EduMentor.Domain.csproj" />
   </ItemGroup>
 
