@@ -41,7 +41,7 @@ public static class PopulateDb
         migrationString +=
             $"INSERT INTO [Users] " +
             $"VALUES ('{userAdmin.Id}', '{userAdmin.FirstName}', '{userAdmin.LastName}', '{userAdmin.Email}', '{userAdmin.Username}', " +
-            $"'{userAdmin.DateOfBirth.ToString("yyyy-MM-dd")}', " +
+            $"'{userAdmin.DateOfBirth:yyyy-MM-dd}', " +
             $"CONVERT(varbinary(max), CAST('{passwordHash}' AS XML).value('.', 'VARBINARY(MAX)')), " +
             $"CONVERT(varbinary(max), CAST('{passwordSalt}' AS XML).value('.', 'VARBINARY(MAX)')), " +
             $"'{userAdmin.RoleId}', 0)\n";
@@ -63,7 +63,7 @@ public static class PopulateDb
         migrationString +=
             $"INSERT INTO [Users] " +
             $"VALUES ('{userDirector.Id}', '{userDirector.FirstName}', '{userDirector.LastName}', '{userDirector.Email}', '{userDirector.Username}', " +
-            $"'{userDirector.DateOfBirth.ToString("yyyy-MM-dd")}', " +
+            $"'{userDirector.DateOfBirth:yyyy-MM-dd}', " +
             $"CONVERT(varbinary(max), CAST('{passwordHash}' AS XML).value('.', 'VARBINARY(MAX)')), " +
             $"CONVERT(varbinary(max), CAST('{passwordSalt}' AS XML).value('.', 'VARBINARY(MAX)')), " +
             $"'{userDirector.RoleId}', 0)\n";
@@ -87,7 +87,7 @@ public static class PopulateDb
             migrationString +=
                 $"INSERT INTO [Users] " +
                 $"VALUES ('{userstudent.Id}', '{userstudent.FirstName}', '{userstudent.LastName}', '{userstudent.Email}', '{userstudent.Username}', " +
-                $"'{userstudent.DateOfBirth.ToString("yyyy-MM-dd")}', " +
+                $"'{userstudent.DateOfBirth:yyyy-MM-dd}', " +
                 $"CONVERT(varbinary(max), CAST('{passwordHash}' AS XML).value('.', 'VARBINARY(MAX)')), " +
                 $"CONVERT(varbinary(max), CAST('{passwordSalt}' AS XML).value('.', 'VARBINARY(MAX)')), " +
                 $"'{userstudent.RoleId}', 0)\n";
@@ -115,7 +115,7 @@ public static class PopulateDb
             migrationString +=
                 $"INSERT INTO [Users] " +
                 $"VALUES ('{userTeacher.Id}', '{userTeacher.FirstName}', '{userTeacher.LastName}', '{userTeacher.Email}', '{userTeacher.Username}', " +
-                $"'{userTeacher.DateOfBirth.ToString("yyyy-MM-dd")}', " +
+                $"'{userTeacher.DateOfBirth:yyyy-MM-dd}', " +
                 $"CONVERT(varbinary(max), CAST('{passwordHash}' AS XML).value('.', 'VARBINARY(MAX)')), " +
                 $"CONVERT(varbinary(max), CAST('{passwordSalt}' AS XML).value('.', 'VARBINARY(MAX)')), " +
                 $"'{userTeacher.RoleId}', 0)\n";
@@ -143,7 +143,7 @@ public static class PopulateDb
             migrationString +=
                 $"INSERT INTO [Users] " +
                 $"VALUES ('{userParent.Id}', '{userParent.FirstName}', '{userParent.LastName}', '{userParent.Email}', '{userParent.Username}', " +
-                $"'{userParent.DateOfBirth.ToString("yyyy-MM-dd")}', " +
+                $"'{userParent.DateOfBirth:yyyy-MM-dd}', " +
                 $"CONVERT(varbinary(max), CAST('{passwordSalt}' AS XML).value('.', 'VARBINARY(MAX)')), " +
                 $"CONVERT(varbinary(max), CAST('{passwordSalt}' AS XML).value('.', 'VARBINARY(MAX)')), " +
                 $"'{userParent.RoleId}', 0)\n";
