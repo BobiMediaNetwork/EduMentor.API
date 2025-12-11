@@ -64,6 +64,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EduMentor.Domain\EduMentor.Domain.csproj" />
+    <ProjectReference Include="..\EduMentor.Infrastructure\EduMentor.Infrastructure.csproj" />
     <ProjectReference Include="..\EduMentor.Persistence\EduMentor.Persistence.csproj" />
   </ItemGroup>
 
