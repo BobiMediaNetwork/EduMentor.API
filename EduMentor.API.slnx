@@ -1,5 +1,4 @@
 <Solution>
-  <Folder Name="/DatabaseSchema/" />
   <Project Path="EduMentor.API/EduMentor.API.csproj" />
   <Project Path="EduMentor.Application/EduMentor.Application.csproj" />
   <Project Path="EduMentor.Domain/EduMentor.Domain.csproj" />
