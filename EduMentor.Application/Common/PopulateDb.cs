@@ -46,6 +46,28 @@ public static class PopulateDb
             $"CONVERT(varbinary(max), CAST('{passwordSalt}' AS XML).value('.', 'VARBINARY(MAX)')), " +
             $"'{userAdmin.RoleId}', 0)\n";
 
+
+        // Director
+        faker = new Faker();
+        var userDirector = new User
+        {
+            Id = Guid.NewGuid(),
+            FirstName = CleanString(faker.Person.FirstName),
+            LastName = CleanString(faker.Person.LastName),
+            Username = faker.Person.UserName.ToLower(),
+            Email = faker.Person.Email.ToLower(),
+            RoleId = populateDto.DirectorId,
+            DateOfBirth = DateOnly.FromDateTime(faker.Date.Between(new DateTime(1950, 1, 1), new DateTime(2005, 1, 1)))
+        };
+
+        migrationString +=
+            $"INSERT INTO [Users] " +
+            $"VALUES ('{userDirector.Id}', '{userDirector.FirstName}', '{userDirector.LastName}', '{userDirector.Email}', '{userDirector.Username}', " +
+            $"'{userDirector.DateOfBirth.ToString("yyyy-MM-dd")}', " +
+            $"CONVERT(varbinary(max), CAST('{passwordHash}' AS XML).value('.', 'VARBINARY(MAX)')), " +
+            $"CONVERT(varbinary(max), CAST('{passwordSalt}' AS XML).value('.', 'VARBINARY(MAX)')), " +
+            $"'{userDirector.RoleId}', 0)\n";
+
         // Students
         var students = new List<User>();
         for (var i = 0; i < NumberOfStudents; i++)
