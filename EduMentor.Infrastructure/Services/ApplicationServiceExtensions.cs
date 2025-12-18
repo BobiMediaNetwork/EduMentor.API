@@ -32,6 +32,7 @@ public static class ApplicationServiceExtensions
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IPasswordResetRepository, PasswordResetRepository>();
         return services;
     }
 }

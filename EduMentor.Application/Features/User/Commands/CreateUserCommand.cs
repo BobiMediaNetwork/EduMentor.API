@@ -4,7 +4,6 @@ using EduMentor.Application.Features.User.DTOs;
 using EduMentor.Application.Interfaces.Email;
 using EduMentor.Application.Interfaces.Repositories;
 using EduMentor.Domain.Generic;
-using EduMentor.Domain.Model;
 using MediatR;
 
 namespace EduMentor.Application.Features.User.Commands;

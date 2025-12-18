@@ -10,18 +10,50 @@ namespace EduMentor.Application.Features.User.Commands;
 
 public class ChangePasswordCommand : IRequest<Result<ResponseType<bool>>>
 {
+    public required Guid PasswordResetId { get; set; }
     public required NewPasswordDto NewPassword { get; set; }
 }
 
 public sealed class ChangePasswordCommandHandler(
     IUserRepository userRepository,
-    IMapper mapper)
+    IMapper mapper,
+    IPasswordResetRepository passwordResetRepository)
     : IRequestHandler<ChangePasswordCommand, Result<ResponseType<bool>>>
 {
     public async Task<Result<ResponseType<bool>>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
-        //TODO: Blocked by email config
-        var user = userRepository.GetUserByIdWithOwnProperties(new Guid());
+        var getPasswordReset = passwordResetRepository.GetPasswordResetByIdWithOwnProperties(request.PasswordResetId);
+
+        if (getPasswordReset is { IsSuccess: false, Object: null })
+        {
+            return Result<ResponseType<bool>>.Success(new ResponseType<bool>
+            {
+                IsSuccess = false,
+                Message = getPasswordReset.Message
+            });
+        }
+
+        if (getPasswordReset.Object!.ExpirationTime < DateTime.Now)
+        {
+            var deletePasswordLinkInvalid = passwordResetRepository.Delete(request.PasswordResetId);
+
+            if (deletePasswordLinkInvalid is { IsSuccess: false, Object: null })
+            {
+                return Result<ResponseType<bool>>.Success(new ResponseType<bool>
+                {
+                    IsSuccess = false,
+                    Message = deletePasswordLinkInvalid.Message
+                });
+            }
+
+            return Result<ResponseType<bool>>.Success(new ResponseType<bool>
+            {
+                IsSuccess = false,
+                Message = "Link is expired!"
+            });
+        }
+
+        var user = userRepository.GetUserByIdWithOwnProperties(getPasswordReset.Object!.UserId);
 
         if (user is { IsSuccess: false, Object: null })
         {
@@ -49,6 +81,17 @@ public sealed class ChangePasswordCommandHandler(
             {
                 IsSuccess = false,
                 Message = updateUser.Message
+            });
+        }
+
+        var deletePasswordLink = passwordResetRepository.Delete(request.PasswordResetId);
+
+        if (deletePasswordLink is { IsSuccess: false, Object: null })
+        {
+            return Result<ResponseType<bool>>.Success(new ResponseType<bool>
+            {
+                IsSuccess = false,
+                Message = deletePasswordLink.Message
             });
         }
 
