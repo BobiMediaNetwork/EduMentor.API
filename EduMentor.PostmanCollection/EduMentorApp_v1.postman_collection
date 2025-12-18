@@ -1,0 +1,248 @@
+{
+	"info": {
+		"_postman_id": "212e0bb3-46a7-4227-9ca0-a90ec8af4098",
+		"name": "EduMentorApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24313646"
+	},
+	"item": [
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "Get Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{apiLink}}/role"
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Role",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{apiLink}}/role/35015ece-09da-468d-be88-1e2c44c58d39"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Student\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiLink}}/role"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Role",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"fbadce41-0124-4a7b-8851-3957a35863f3\",\r\n    \"Name\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiLink}}/role"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{apiLink}}/role/8de9fde6-052b-4501-ba42-5ebc6cb50b4b"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{apiLink}}/user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get One User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{apiLink}}/user/2c6dcb9f-45c1-463b-bd91-17443ecca34b"
+					},
+					"response": []
+				},
+				{
+					"name": "Add User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Andrei\",\r\n  \"lastName\": \"Bolba\",\r\n  \"username\": \"andreibolbam\",\r\n  \"email\": \"andreibolbamateescu@gmail.com\",\r\n  \"dateOfBirth\": \"2001-07-09\",\r\n  \"roleId\": \"faf1e4d9-5f8f-4912-9e07-3ebc10deafae\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiLink}}/user"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"A27EEB6D-2534-4046-AEB4-D28CD2B57312\",\r\n  \"dateOfBirth\": \"2001-07-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiLink}}/user"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"fbadce41-0124-4a7b-8851-3957a35863f3\",\r\n    \"Name\": \"\"\r\n}"
+						},
+						"url": "{{apiLink}}/user/7571DD29-703F-42E7-A44D-39ADB2808948"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users By Role",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{apiLink}}/user/all/teacher"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"password\": \"EduMentor!2025\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiLink}}/user/573d205e-cd68-45f6-ac22-cfeb07180f1d"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "LogIn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"andreibolbamateescu@gmail.com\",\r\n    \"password\": \"EduMentor!2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiLink}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Password Reset",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"andrei_bolba@yahoo.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiLink}}/auth/password-reset"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "apiLink",
+			"value": ""
+		}
+	]
+}
