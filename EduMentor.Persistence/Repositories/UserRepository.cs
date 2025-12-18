@@ -3,6 +3,7 @@ using EduMentor.Domain.Enum;
 using EduMentor.Domain.Generic;
 using EduMentor.Domain.Model;
 using EduMentor.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace EduMentor.Persistence.Repositories;
 
@@ -10,56 +11,288 @@ public class UserRepository(EduMentorDbContext context) : IUserRepository
 {
     public ResponseType<User> Add(User entity)
     {
-        throw new NotImplementedException();
+        try
+        {
+            context.Users.Add(entity);
+            context.SaveChanges();
+
+            return new ResponseType<User>
+            {
+                Object = entity,
+                Message = "User was added successfully",
+                IsSuccess = true
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ResponseType<User>
+            {
+                Object = null,
+                Collection = null,
+                Message = ex.Message,
+                IsSuccess = false
+            };
+        }
     }
 
     public ResponseType<User> Delete(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var entity = GetUserByIdWithOwnProperties(id);
+            if (entity is not { IsSuccess: true, Object: not null })
+            {
+                return new ResponseType<User>
+                {
+                    Message = entity.Message,
+                    IsSuccess = true
+                };
+            }
+
+            entity.Object!.IsDeleted = true;
+            context.Users.Update(entity.Object!);
+            context.SaveChanges();
+            return new ResponseType<User>
+            {
+                Message = "User deleted successfully!",
+                IsSuccess = true
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ResponseType<User>
+            {
+                Object = null,
+                Collection = null,
+                Message = ex.Message,
+                IsSuccess = false
+            };
+        }
     }
 
     public ResponseType<User> GetAll()
     {
-        throw new NotImplementedException();
-    }
+        try
+        {
+            var users = context.Users
+                .Include(u => u.Role);
 
-    public ResponseType<Guid> GetAllStudentsRegisteredAtAClass(Guid classId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public ResponseType<User> GetAllUsersByRole(RoleEnum role)
-    {
-        throw new NotImplementedException();
+            return new ResponseType<User>
+            {
+                Object = null,
+                Collection = users.AsEnumerable(),
+                Message = "Users was sent successfully",
+                IsSuccess = true
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ResponseType<User>
+            {
+                Object = null,
+                Collection = null,
+                Message = ex.Message,
+                IsSuccess = false
+            };
+        }
     }
 
     public ResponseType<User> GetObjectById(Guid id)
     {
-        throw new NotImplementedException();
-    }
+        try
+        {
+            var getAllUsers = GetAll();
+            if (getAllUsers is not { IsSuccess: true, Collection: not null })
+            {
+                return new ResponseType<User>
+                {
+                    Message = getAllUsers.Message,
+                    IsSuccess = false
+                };
+            }
 
-    public ResponseType<User> GetUserByEmail(string email)
-    {
-        throw new NotImplementedException();
+            var user = getAllUsers.Collection.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return new ResponseType<User>
+                {
+                    Message = "User could not be find!",
+                    IsSuccess = false
+                };
+            }
+
+            return new ResponseType<User>
+            {
+                Object = user,
+                Message = "User find successfully!",
+                IsSuccess = true
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ResponseType<User>
+            {
+                Object = null,
+                Collection = null,
+                Message = ex.Message,
+                IsSuccess = false
+            };
+        }
     }
 
     public ResponseType<User> GetUserByIdWithOwnProperties(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var user = context.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return new ResponseType<User>
+                {
+                    Message = "User could not be find!",
+                    IsSuccess = false
+                };
+            }
+
+            return new ResponseType<User>
+            {
+                Object = user,
+                Message = "User find successfully!",
+                IsSuccess = true
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ResponseType<User>
+            {
+                Object = null,
+                Collection = null,
+                Message = ex.Message,
+                IsSuccess = false
+            };
+        }
     }
 
     public ResponseType<User> IsEmailAndUsernameUnique(string? email, string? username)
     {
-        throw new NotImplementedException();
-    }
+        try
+        {
+            if (!string.IsNullOrEmpty(email))
+            {
+                var user = context.Users.FirstOrDefault(u => u.Email == email);
 
-    public ResponseType<User> IsUserACertainType(Guid id, RoleEnum role)
-    {
-        throw new NotImplementedException();
+                if (user != null)
+                {
+                    return new ResponseType<User>
+                    {
+                        Message = "Email is already used",
+                        IsSuccess = false
+                    };
+                }
+            }
+
+            if (!string.IsNullOrEmpty(username))
+            {
+                var user = context.Users.FirstOrDefault(u => u.Username == username);
+
+                if (user != null)
+                {
+                    return new ResponseType<User>
+                    {
+                        Message = "Username is already used",
+                        IsSuccess = false
+                    };
+                }
+            }
+
+            return new ResponseType<User>
+            {
+                Object = null,
+                Message = "Email and password is unique!",
+                IsSuccess = true
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ResponseType<User>
+            {
+                Object = null,
+                Collection = null,
+                Message = ex.Message,
+                IsSuccess = false
+            };
+        }
     }
 
     public ResponseType<User> Update(User entity)
     {
-        throw new NotImplementedException();
+        try
+        {
+            context.Users.Update(entity);
+            context.SaveChanges();
+
+            return new ResponseType<User>
+            {
+                Object = entity,
+                Message = "User updated successfully!",
+                IsSuccess = true
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ResponseType<User>
+            {
+                Object = null,
+                Collection = null,
+                Message = ex.Message,
+                IsSuccess = false
+            };
+        }
+    }
+
+    public ResponseType<User> GetAllUsersByRole(RoleEnum role)
+    {
+        try
+        {
+            var roleFromDb = context.Roles.FirstOrDefault(r => r.Name == role.ToString());
+
+            if (roleFromDb is null)
+            {
+                return new ResponseType<User>
+                {
+                    Message = "Role does not exists",
+                    IsSuccess = false
+                };
+            }
+
+            var users = GetAll();
+
+            if (users is { IsSuccess: false, Collection: null })
+            {
+                return new ResponseType<User>
+                {
+                    IsSuccess = false,
+                    Message = users.Message
+                };
+            }
+
+            var usersByRole = users.Collection!.Where(u => u.RoleId == roleFromDb.Id);
+
+            return new ResponseType<User>
+            {
+                Collection = usersByRole,
+                Message = "Users find successfully!",
+                IsSuccess = true
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ResponseType<User>
+            {
+                Collection = null,
+                Message = ex.Message,
+                IsSuccess = false
+            };
+        }
     }
 }
