@@ -60,11 +60,11 @@ public class UserController(ISender sender) : BaseAPIController
         return await sender.Send(new GetAllUsersByRoleQuery { Role = role });
     }
 
-    [HttpPatch("{passwordResetId:guid}")]
+    [HttpPatch("password-reset/{passwordResetId:guid}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
     public async Task<ResponseType<bool>> UpdatePassword(Guid passwordResetId, [FromBody] NewPasswordDto newPassword)
     {
-        return await sender.Send(new ChangePasswordCommand { NewPassword = newPassword });
+        return await sender.Send(new ChangePasswordCommand { PasswordResetId = passwordResetId, NewPassword = newPassword });
     }
 }
