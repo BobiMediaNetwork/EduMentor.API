@@ -1,5 +1,8 @@
 using EduMentor.Application.Common;
 using EduMentor.Application.Features.Role.Commands;
+using EduMentor.Application.Interfaces.Email;
+using EduMentor.Domain.EmailModel;
+using EduMentor.Infrastructure.EmailService;
 using EduMentor.Infrastructure.Services;
 using EduMentor.Persistence.Context;
 using FluentValidation;
@@ -31,6 +34,8 @@ namespace EduMentor.API
             builder.Services.AddApplicationServices(builder.Configuration, allCoreProjectsAssembly);
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             builder.Services.AddValidatorsFromAssemblyContaining<CreateRoleCommand>();
+            builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+            builder.Services.AddTransient<IEmailService, EmailService>();
 
 
             var app = builder.Build();
