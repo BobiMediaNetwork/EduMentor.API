@@ -1,5 +1,9 @@
+using EduMentor.Application.Common;
+using EduMentor.Application.Features.Role.Commands;
 using EduMentor.Infrastructure.Services;
 using EduMentor.Persistence.Context;
+using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -18,8 +22,16 @@ namespace EduMentor.API
 
             builder.Services.AddControllers();
             builder.Services.AddApplicationServices(builder.Configuration, allCoreProjectsAssembly);
+            builder.Services.AddAutoMapper(cfg =>
+            {
+                cfg.AddMaps(AppDomain.CurrentDomain.GetAssemblies());
+            });
             builder.Services.AddDbContext<EduMentorDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("EduMentor")));
+            builder.Services.AddApplicationServices(builder.Configuration, allCoreProjectsAssembly);
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateRoleCommand>();
+
 
             var app = builder.Build();
 
