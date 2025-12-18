@@ -1,4 +1,5 @@
 ﻿using EduMentor.Application.Interfaces.Repositories;
+using EduMentor.Domain.Enum;
 using EduMentor.Domain.Generic;
 using EduMentor.Domain.Model;
 using EduMentor.Persistence.Context;
@@ -242,6 +243,52 @@ public class UserRepository(EduMentorDbContext context) : IUserRepository
             return new ResponseType<User>
             {
                 Object = null,
+                Collection = null,
+                Message = ex.Message,
+                IsSuccess = false
+            };
+        }
+    }
+
+    public ResponseType<User> GetAllUsersByRole(RoleEnum role)
+    {
+        try
+        {
+            var roleFromDb = context.Roles.FirstOrDefault(r => r.Name == role.ToString());
+
+            if (roleFromDb is null)
+            {
+                return new ResponseType<User>
+                {
+                    Message = "Role does not exists",
+                    IsSuccess = false
+                };
+            }
+
+            var users = GetAll();
+
+            if (users is { IsSuccess: false, Collection: null })
+            {
+                return new ResponseType<User>
+                {
+                    IsSuccess = false,
+                    Message = users.Message
+                };
+            }
+
+            var usersByRole = users.Collection!.Where(u => u.RoleId == roleFromDb.Id);
+
+            return new ResponseType<User>
+            {
+                Collection = usersByRole,
+                Message = "Users find successfully!",
+                IsSuccess = true
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ResponseType<User>
+            {
                 Collection = null,
                 Message = ex.Message,
                 IsSuccess = false
