@@ -1,4 +1,5 @@
-﻿using EduMentor.Application.Features.User.Commands;
+﻿using EduMentor.Application.Common.DTOs;
+using EduMentor.Application.Features.User.Commands;
 using EduMentor.Application.Features.User.DTOs;
 using EduMentor.Application.Features.User.Queries;
 using EduMentor.Domain.Enum;
@@ -57,5 +58,13 @@ public class UserController(ISender sender) : BaseAPIController
     public async Task<ResponseType<ReadUserDto>> GetAllUserByRole(RoleEnum role)
     {
         return await sender.Send(new GetAllUsersByRoleQuery { Role = role });
+    }
+
+    [HttpPatch("{passwordResetId:guid}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<ResponseType<bool>> UpdatePassword(Guid passwordResetId, [FromBody] NewPasswordDto newPassword)
+    {
+        return await sender.Send(new ChangePasswordCommand { NewPassword = newPassword });
     }
 }
