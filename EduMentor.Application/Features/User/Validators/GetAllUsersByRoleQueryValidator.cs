@@ -7,7 +7,7 @@ public class GetAllUsersByRoleQueryValidator : AbstractValidator<GetAllUsersByRo
 {
     public GetAllUsersByRoleQueryValidator()
     {
-        RuleFor(role => role)
+        RuleFor(x => x.Role)
             .IsInEnum().WithMessage("Invalid role.");
     }
 
