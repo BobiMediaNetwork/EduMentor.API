@@ -1,4 +1,4 @@
-﻿// using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduMentor.API.Controllers;
@@ -6,7 +6,7 @@ namespace EduMentor.API.Controllers;
 [ApiController]
 [Route("api/[controller]/")]
 [Produces("application/json")]
-// [Authorize(AuthenticationSchemes = "Bearer")]
+[Authorize(AuthenticationSchemes = "Bearer")]
 
 public class BaseAPIController : ControllerBase
 {
