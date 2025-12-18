@@ -1,4 +1,6 @@
 ﻿using EduMentor.Application.Interfaces.Repositories;
+using EduMentor.Application.Interfaces.Security;
+using EduMentor.Infrastructure.Security;
 using EduMentor.Persistence.Context;
 using EduMentor.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +31,9 @@ public static class ApplicationServiceExtensions
         });
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(coreProjectsAssemblies)
         );
+
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<ISecurityService, SecurityService>();
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();

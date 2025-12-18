@@ -36,6 +36,7 @@ namespace EduMentor.API
             builder.Services.AddValidatorsFromAssemblyContaining<CreateRoleCommand>();
             builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
             builder.Services.AddTransient<IEmailService, EmailService>();
+            builder.Services.AddIdentityServices(builder.Configuration);
 
 
             var app = builder.Build();

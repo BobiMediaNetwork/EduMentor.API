@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EduMentor.Application.Features.Auth.DTOs;
 using EduMentor.Application.Features.User.DTOs;
 using EduMentor.Domain.Model;
 using System.Security.Cryptography;
@@ -11,6 +12,10 @@ public class UserProfile : Profile
     public UserProfile()
     {
         CreateMap<User, ReadUserDto>()
+            .ForMember(dest
+                => dest.RoleName, opt
+                => opt.MapFrom(src => src.Role.Name));
+        CreateMap<User, LogInResponseDto>()
             .ForMember(dest
                 => dest.RoleName, opt
                 => opt.MapFrom(src => src.Role.Name));
@@ -37,7 +42,6 @@ public class UserProfile : Profile
             .ForAllMembers(opt =>
                 opt.Condition((src, dest, srcMember) =>
                     srcMember != null && !(srcMember is Guid guid && guid == Guid.Empty)));
-
     }
 }
 
