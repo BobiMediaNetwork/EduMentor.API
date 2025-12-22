@@ -38,8 +38,9 @@ namespace EduMentor.API
             builder.Services.AddTransient<IEmailService, EmailService>();
             builder.Services.AddIdentityServices(builder.Configuration);
 
-
             var app = builder.Build();
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
 
