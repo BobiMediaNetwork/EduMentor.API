@@ -137,6 +137,43 @@ public class RoleRepository(EduMentorDbContext context) : IRoleRepository
         }
     }
 
+    public ResponseType<Role> IsNameUnique(string name)
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                var user = context.Roles.FirstOrDefault(u => u.Name == name);
+
+                if (user != null)
+                {
+                    return new ResponseType<Role>
+                    {
+                        Message = "Name is already used",
+                        IsSuccess = false
+                    };
+                }
+            }
+
+            return new ResponseType<Role>
+            {
+                Object = null,
+                Message = "Name is unique!",
+                IsSuccess = true
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ResponseType<Role>
+            {
+                Object = null,
+                Collection = null,
+                Message = ex.Message,
+                IsSuccess = false
+            };
+        }
+    }
+
     public ResponseType<Role> Update(Role entity)
     {
         try

@@ -17,6 +17,16 @@ public sealed class AddRoleCommandHandler(IRoleRepository roleRepository, IMappe
 {
     public async Task<Result<ResponseType<ReadRoleDto>>> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
     {
+        var existsRole = roleRepository.IsNameUnique(request.Role.Name);
+
+        if (existsRole is { IsSuccess: false, Object: null })
+        {
+            return Result<ResponseType<ReadRoleDto>>.Success(new ResponseType<ReadRoleDto>
+            {
+                IsSuccess = false,
+                Message = existsRole.Message,
+            });
+        }
 
         var addRole = mapper.Map<Domain.Model.Role>(request.Role);
 
