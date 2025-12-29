@@ -26,7 +26,12 @@ public class EduMentorDbContext(DbContextOptions<EduMentorDbContext> options) : 
                 .OnDelete(DeleteBehavior.NoAction);
         });
 
-        modelBuilder.Entity<Role>(entity => { entity.HasKey(r => r.Id); });
+        modelBuilder.Entity<Role>(entity => 
+        { 
+            entity.HasKey(r => r.Id); 
+
+            entity.HasIndex(r => r.Name).IsUnique();
+        });
 
         modelBuilder.Entity<PasswordReset>(entity =>
         {

@@ -5,4 +5,5 @@ namespace EduMentor.Application.Interfaces.Repositories;
 
 public interface IRoleRepository : IRepository<Role>
 {
+    public ResponseType<Role> IsNameUnique(string name);
 }
